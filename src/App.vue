@@ -2,67 +2,41 @@
   <div class="container">
     <Header @toggle-add-task="toggleAddTasks" 
     title="Task Tracker" :showAddTask="showAddTask"/>
-    <div v-show="showAddTask">
-      <AddTask @add-task="addTask"/>
-    </div>
-   <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks"/>
-    <!-- <Time /> -->
+    
+    <router-view  :showAddTask="showAddTask"></router-view>
+    <Footer @handleHomePage="changeHomePage" :onHomePage="onHomePage"/>
   </div>
 </template> 
 
 <script>
 
 import Header from "./components/Header"
-import Tasks from "./components/Tasks"
-import AddTask from "./components/AddTask"
-// import Time from "./components/Time"
+
+import Footer from "./components/Footer"
+
 
 export default {
   name: 'App',
   components: {
     Header,
-    Tasks,
-    AddTask,
-    // Time
+    Footer,
   },
   data () {
     return {
-      tasks: [],
-      showAddTask: false
+      showAddTask: false,
+      onHomePage: true
     }
   },
   methods: {
-    addTask(task) {
-      this.tasks.push(task)
+    changeHomePage() {
+      this.onHomePage = !this.onHomePage;
     },
-    deleteTask(id) {
-      if(confirm("Are you sure?"))
-      this.tasks = this.tasks.filter((task) => task.id !== id)
-    },
-
-    toggleReminder(id) {
-      this.tasks = this.tasks.map((task) => 
-        task.id == id ? {...task, reminder: !task.
-        reminder} : task
-      )
-    },
-
+    // Toggles the Add task form inputs
     toggleAddTasks() {
       this.showAddTask = !this.showAddTask
-    },
-
-    async fetchTasks() {
-      const res = await fetch("http://localhost:3000/tasks")
-
-      const data = await res.json()
-
-      return data
-
     }
-  },
-  async created() {
-    this.tasks = await this.fetchTasks()
   }
+  
 }
 </script>
 
@@ -76,6 +50,9 @@ export default {
   body {
     font-family: 'Poppins', sans-serif;
   }
+  .body {
+    background-color: black;
+  }
   .container {
     max-width: 500px;
     margin: 30px auto;
@@ -84,6 +61,7 @@ export default {
     border: 1px solid steelblue;
     padding: 30px;
     border-radius: 5px;
+    
   }
   .btn {
     display: inline-block;

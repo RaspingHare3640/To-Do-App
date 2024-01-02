@@ -1,6 +1,7 @@
 <template>
     <div :key="task.id" v-for="task in tasks">
-        <Task 
+        <Task
+        @edit-reminder="bubbleData" 
         @toggle-reminder="$emit('toggle-reminder', task.id)"
         @delete-task="$emit('delete-task', task.id)" :task="task" 
         />
@@ -19,6 +20,13 @@
         },
         components: {
             Task
-        }, emits: ['delete-task', 'toggle-reminder']
+        }, 
+        methods: {
+            bubbleData(data, id, type) {
+                this.$emit('edit-reminder', data, id, type);
+            }
+        },
+        emits: ['delete-task', 'toggle-reminder', "edit-reminder"],
+        
     }
 </script>
