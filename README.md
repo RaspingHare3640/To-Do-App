@@ -1,2 +1,2 @@
 # To-Do
-S
+Simple Tod-Do App
